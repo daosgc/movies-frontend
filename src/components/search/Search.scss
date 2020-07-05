@@ -1,0 +1,56 @@
+$light-gray: #f3f3f4;
+$basic-gray: #e7e7e9;
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+  background-image: url('../../assets/search_icon.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-color: $light-gray;
+}
+
+.delete-icon {
+  width: 20px;
+  height: 20px;
+  background-image: url('../../assets/delete_icon.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  cursor: pointer;
+  background-color: $light-gray;
+  visibility: hidden;
+  border-radius: 10px;
+
+  &.show {
+    visibility: visible;
+  }
+
+  &:hover {
+    background-color: $basic-gray;
+  }
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid;
+  border-radius: 50px;
+  padding: 0 10px;
+  width: 100%;
+  background-color: $light-gray;
+
+  .search-input {
+    width: 100%;
+    height: 2rem;
+    border: 0;
+    outline: none;
+    background-color: $light-gray;
+  }
+}
