@@ -1,89 +1,22 @@
-import React, { useReducer, useState, useEffect } from 'react';
-import './App.css';
-import SearchComponent from './components/search';
-import MovieComponent from './components/movie';
-import { initialState, reducer } from "./store/reducer";
-import Rating from '@material-ui/lab/Rating';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+import { Home, MovieDetails } from './screens';
 
-const apiKey = '4c16fd893b9ba73cf0d84ceb8273cb58';
-const apiDiscover = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}`
-
-function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const { movies, errorMessage, loading } = state;
-  const [rating, setRating] = useState(0);
-
-  const search = queryText => {
-    dispatch({
-      type: "LOADING_MOVIES"
-    });
-
-    const apiSearch = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${queryText}`;
-    const apirUrl = queryText ? apiSearch : apiDiscover;
-    console.log('queryText', queryText);
-    fetch(apirUrl)
-    .then(response => response.json())
-    .then(response => {
-      dispatch({
-        type: "MOVIES_SUCCESS",
-        payload: response.results
-      });
-    })
-    .catch(err => {
-      dispatch({
-        type: "MOVIES_FAILURE",
-        payload: err
-      });
-    });
-  };
-
-  useEffect(() => {
-    dispatch({
-      type: "LOADING_MOVIES"
-    });
-
-    fetch(apiDiscover)
-      .then(response => response.json())
-      .then(response => {
-        dispatch({
-          type: "MOVIES_SUCCESS",
-          payload: response.results
-        });
-      })
-      .catch(err => {
-        dispatch({
-          type: "MOVIES_FAILURE",
-          payload: err
-        });
-      });
-
-  }, []);
-
-
-  const retrievedMovies =
-    loading && !errorMessage ? (
-      <div className="loading">Cargando..</div>
-    ) : errorMessage ? (
-      <div className="errorMessage">{errorMessage}</div>
-    ) : (
-      movies.map((movie, index) => (
-        <MovieComponent key={`${index}-${movie.Title}`} movie={movie} />
-      ))
-    );
-
+export default function App() {
   return (
-    <div className="App">
-      <SearchComponent search={search} />
-      <Rating
-          name="simple-controlled"
-          value={rating}
-          onChange={(event, newValue) => {
-            setRating(newValue);
-          }}
-        />
-      <div className="movies">{retrievedMovies}</div>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="/movie/:id" >
+          <MovieDetails />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
-
-export default App;
