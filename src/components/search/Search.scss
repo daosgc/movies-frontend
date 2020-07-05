@@ -10,18 +10,12 @@ $basic-gray: #e7e7e9;
 .search-icon {
   width: 20px;
   height: 20px;
-  background-image: url('../../assets/search_icon.png');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
   background-color: $light-gray;
 }
 
 .delete-icon {
   width: 20px;
   height: 20px;
-  background-image: url('../../assets/delete_icon.png');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
   cursor: pointer;
   background-color: $light-gray;
   visibility: hidden;

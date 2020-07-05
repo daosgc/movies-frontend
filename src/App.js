@@ -1,8 +1,9 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useState, useEffect } from 'react';
 import './App.css';
 import SearchComponent from './components/search';
 import MovieComponent from './components/movie';
 import { initialState, reducer } from "./store/reducer";
+import Rating from '@material-ui/lab/Rating';
 
 const apiKey = '4c16fd893b9ba73cf0d84ceb8273cb58';
 const apiDiscover = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}`
@@ -10,6 +11,7 @@ const apiDiscover = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKe
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { movies, errorMessage, loading } = state;
+  const [rating, setRating] = useState(0);
 
   const search = queryText => {
     dispatch({
@@ -72,6 +74,13 @@ function App() {
   return (
     <div className="App">
       <SearchComponent search={search} />
+      <Rating
+          name="simple-controlled"
+          value={rating}
+          onChange={(event, newValue) => {
+            setRating(newValue);
+          }}
+        />
       <div className="movies">{retrievedMovies}</div>
     </div>
   );

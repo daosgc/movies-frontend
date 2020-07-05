@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './Search.scss';
+import SearchIcon from '@material-ui/icons/Search';
+import ClearIcon from '@material-ui/icons/Clear';
 
 const SearchComponent = ({ search }) => {
   const [queryTxt, setQueryTxt] = useState('');
@@ -22,7 +24,7 @@ const SearchComponent = ({ search }) => {
   return (
     <div className="search-container">
       <form className="search-form" onSubmit={onSearchFunction}>
-        <div className="search-icon"></div>
+        <SearchIcon className="search-icon"/>
         <input
           className="search-input"
           placeholder="Search movie"
@@ -30,7 +32,7 @@ const SearchComponent = ({ search }) => {
           onChange={onQueryChange}
           type="text"
         ></input>
-        <div className={deleteBtnClass} onClick={resetSearchQuery}></div>
+        <ClearIcon className={deleteBtnClass} onClick={resetSearchQuery}/>
       </form>
     </div>
   );

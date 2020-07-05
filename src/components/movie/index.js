@@ -9,7 +9,7 @@ const MovieComponent = ({ movie }) => {
     movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : DEFAULT_PLACEHOLDER_IMAGE;
   return (
     <div className="movie-card">
-      <img className="poster" src={poster} />
+      <img className="poster" src={poster} alt={`movie_${movie.original_title}`}/>
       <div className="footer">
         {movie.original_title}
       </div>
