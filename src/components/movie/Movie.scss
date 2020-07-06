@@ -1,0 +1,29 @@
+.movie-card {
+  position: relative;
+  width: 200px;
+  height: 300px;
+  margin: 0.5rem;
+
+  .poster {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 300px;
+    width: 200px;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    background: #333434ad;
+    font-size: 16px;
+    height: 4.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+  }
+}
