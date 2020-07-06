@@ -2,9 +2,10 @@ import React, { useReducer, useState, useEffect } from 'react';
 import './Home.scss';
 import SearchComponent from '../../components/search';
 import MovieComponent from '../../components/movie';
-import { initialState, reducer } from "../../store/reducer";
+import { initialState, reducer } from '../../store/reducer';
 import Rating from '@material-ui/lab/Rating';
 import { useHistory } from "react-router-dom";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const apiKey = '4c16fd893b9ba73cf0d84ceb8273cb58';
 const apiDiscover = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&sort_by=popularity.des`
@@ -23,7 +24,7 @@ function Home() {
 
   const search = queryText => {
     dispatch({
-      type: "LOADING_MOVIES"
+      type: 'LOADING_MOVIES'
     });
 
     const apiSearch = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${queryText}`;
@@ -32,8 +33,8 @@ function Home() {
     .then(response => response.json())
     .then(response => {
       dispatch({
-        type: "MOVIES_SUCCESS",
-        payload: response.results
+        type: response.status_message ? 'MOVIES_FAILURE' : 'MOVIES_SUCCESS',
+        payload: response.status_message ? response.status_message : response.results
       });
     })
     .catch(err => {
@@ -46,24 +47,23 @@ function Home() {
 
   useEffect(() => {
     dispatch({
-      type: "LOADING_MOVIES"
+      type: 'LOADING_MOVIES'
     });
 
     fetch(apiDiscover)
-      .then(response => response.json())
-      .then(response => {
-        dispatch({
-          type: "MOVIES_SUCCESS",
-          payload: response.results
-        });
-      })
-      .catch(err => {
-        dispatch({
-          type: "MOVIES_FAILURE",
-          payload: err
-        });
+    .then(response => response.json())
+    .then(response => {
+      dispatch({
+        type: response.status_message ? 'MOVIES_FAILURE' : 'MOVIES_SUCCESS',
+        payload: response.status_message ? response.status_message : response.results
       });
-
+    })
+    .catch(err => {
+      dispatch({
+        type: 'MOVIES_FAILURE',
+        payload: err
+      });
+    });
   }, []);
 
   const onRatingFilter = (value) => {
@@ -82,7 +82,7 @@ function Home() {
   const moviesList = moviesFiltered ? moviesFiltered : movies;
   const retrievedMovies =
     loading && !errorMessage ? (
-      <div className="loading">Cargando..</div>
+      <CircularProgress />
     ) : errorMessage ? (
       <div className="errorMessage">{errorMessage}</div>
     ) : (
@@ -91,7 +91,7 @@ function Home() {
           <MovieComponent movie={movie}/>
         </div>
       )) : (
-        <div className="placeholder">Empty state</div>
+        <div className="placeholder">No Movies</div>
       )
     );
 

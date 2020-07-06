@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {
   useParams
-} from "react-router-dom";
+} from 'react-router-dom';
 import './Details.scss';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const DEFAULT_PLACEHOLDER_IMAGE =
-  "https://cinemaone.net/images/movie_placeholder.png";
+  'https://cinemaone.net/images/movie_placeholder.png';
 const apiKey = '4c16fd893b9ba73cf0d84ceb8273cb58';
 
 function MovieDetails() {
@@ -21,9 +22,14 @@ function MovieDetails() {
       .then(response => response.json())
       .then(response => {
         setLoading(false);
-        setMovie(response);
+        if (response.status_message) {
+          setErrorMessage(response.status_message);
+        } else {
+          setMovie(response);
+        }
       })
       .catch(err => {
+        setLoading(false);
         setErrorMessage(err);
       });
   }, [id]);
@@ -33,7 +39,7 @@ function MovieDetails() {
 
   const retrievedMovie =
     loading && !errorMessage ? (
-      <div className="loading">Cargando..</div>
+      <CircularProgress />
     ) : errorMessage ? (
       <div className="errorMessage">{errorMessage}</div>
     ) : (

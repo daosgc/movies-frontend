@@ -22,7 +22,7 @@ export const reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        errorMessage: action.error
+        errorMessage: action.payload
       };
     default:
       return state;
