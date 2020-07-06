@@ -7,12 +7,13 @@ import Rating from '@material-ui/lab/Rating';
 import { useHistory } from "react-router-dom";
 
 const apiKey = '4c16fd893b9ba73cf0d84ceb8273cb58';
-const apiDiscover = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}`
+const apiDiscover = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&sort_by=popularity.des`
 
 function Home() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { movies, errorMessage, loading } = state;
   const [rating, setRating] = useState(0);
+  const [moviesFiltered, setMoviesFiltered] = useState(null);
 
   let history = useHistory();
 
@@ -65,31 +66,52 @@ function Home() {
 
   }, []);
 
+  const onRatingFilter = (value) => {
+    setRating(value);
+    if (value) {
+      const stepRating = 2;
+      const toRating = value * stepRating;
+      const fromRating = toRating - stepRating;
+      const newMovies = movies.filter(m => m.vote_average >= fromRating && m.vote_average < toRating);
+      setMoviesFiltered(newMovies);
+    } else {
+      setMoviesFiltered(null);
+    }
+  }
 
+  const moviesList = moviesFiltered ? moviesFiltered : movies;
   const retrievedMovies =
     loading && !errorMessage ? (
       <div className="loading">Cargando..</div>
     ) : errorMessage ? (
       <div className="errorMessage">{errorMessage}</div>
     ) : (
-      movies.map((movie) => (
+      (moviesList && moviesList.length > 0) ? moviesList.map((movie) => (
         <div onClick={() => handleRedirectEv(movie.id)} key={movie.id}>
           <MovieComponent movie={movie}/>
         </div>
-      ))
+      )) : (
+        <div className="placeholder">Empty state</div>
+      )
     );
 
   return (
-    <div className="home-container">
-      <SearchComponent search={search} />
-      <Rating
+    <div className="home">
+      <div className="header-container">
+        <div className="title">Your favorite movies</div>
+        <div className="searchComponent">
+          <SearchComponent search={search} />
+        </div>
+      </div>
+      <div className="rating-container">
+        <div className="label">Rating</div>
+        <Rating
           name="simple-controlled"
           value={rating}
-          onChange={(event, newValue) => {
-            setRating(newValue);
-          }}
+          onChange={(event, newValue) => onRatingFilter(newValue)}
         />
-      <div className="movies">{retrievedMovies}</div>
+      </div>
+      <div className="movies-container">{retrievedMovies}</div>
     </div>
   );
 }

@@ -5,18 +5,24 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 const SearchComponent = ({ search }) => {
   const [queryTxt, setQueryTxt] = useState('');
+  const [searchDone, setSearchDone] = useState(false);
 
   const onQueryChange = e => {
     setQueryTxt(e.target.value);
   };
 
   const resetSearchQuery = () => {
+    if (searchDone) {
+      search('');
+    }
     setQueryTxt('');
+    setSearchDone(false);
   };
 
   const onSearchFunction = e => {
     e.preventDefault();
     search(queryTxt);
+    setSearchDone(true);
   };
 
   const deleteBtnClass = `delete-icon ${queryTxt !== '' ? 'show': ''}`;

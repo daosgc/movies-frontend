@@ -1,5 +1,41 @@
-.home-container {
-  .movies {
+.home {
+
+  .header-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 20rem;
+    width: 100%;
+    background-image: url('../../assets/cinema-header.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    .title {
+      color: #f0cda4;
+      text-shadow: 2px 2px #cc9061;
+      font-size: 3rem;
+    }
+
+    .searchComponent {
+      width: 50%;
+    }
+  }
+
+  .rating-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+
+    .label {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
+  }
+
+  .movies-container {
     display: flex;
     justify-content: center;
     align-items: center;
